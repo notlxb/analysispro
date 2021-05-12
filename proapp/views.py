@@ -216,38 +216,39 @@ def upload_exam_grade(request):
                             title_num_2 = title_num_2.split(",")
                         elif "，" in title_num_2:
                             title_num_2 = title_num_2.split("，")
-                        print(title_num_2)
+                        else:
+                            title_num_2 = title_num_2.split()
                         new_title_num_2 = []
-                        # if len(title_num_2) != 0:
-                        #     for k in range(len(title_num_2)):
-                        #         if "-" in title_num_2[k]:
-                        #             temp = title_num_2[k].split("-")
-                        #             for m in range(int(temp[0]), int(temp[1]) + 1):
-                        #                 new_title_num_2.append(str(m))
-                        #         elif title_num_2[k] != "":
-                        #             new_title_num_2.append(title_num_2[k])
-                        #     new_title_num_2 = [x for x in new_title_num_2 if "-" not in x]
-                        #     for x in new_title_num_2:
-                        #         dis_score_1 += float(grade_data_kind[j][title][x])
-                        #     sum_score_1 += int(float(exam_type[j]["score_sin"]))
-                        # else:
-                        #     sum_score_1 += int(float(exam_type[j]["score_sin"]))
-                #     dis_score.append("%.2f" % dis_score_1)
-                #     all_score.append(sum_score_1)
-                # datasets = []
-                # for i in range(len(all_score)):
-                #     temp = float(dis_score[i]) / float(all_score[i])
-                #     datasets.append("%.2f" % temp)
-                # g_model = examappro.grade_model
-                # cheak_exist = 0
-                # for i in range(len(g_model)):
-                #     if g_model[i]["name"] == file_type:
-                #         g_model[i]["data"] = [x for x in datasets]
-                #         cheak_exist = 1
-                # if cheak_exist == 0:
-                #     g_model.append({"name": file_type, "type": 'bar', "data": [x for x in datasets]})
-                # examappro.grade_model = g_model
-                # examappro.save()
+                        if len(title_num_2) != 0:
+                            for k in range(len(title_num_2)):
+                                if "-" in title_num_2[k]:
+                                    temp = title_num_2[k].split("-")
+                                    for m in range(int(temp[0]), int(temp[1]) + 1):
+                                        new_title_num_2.append(str(m))
+                                elif title_num_2[k] != "":
+                                    new_title_num_2.append(title_num_2[k])
+                            new_title_num_2 = [x for x in new_title_num_2 if "-" not in x]
+                            for x in new_title_num_2:
+                                dis_score_1 += float(grade_data_kind[j][title][x])
+                            sum_score_1 += int(float(exam_type[j]["score_sin"]))
+                        else:
+                            sum_score_1 += int(float(exam_type[j]["score_sin"]))
+                    dis_score.append("%.2f" % dis_score_1)
+                    all_score.append(sum_score_1)
+                datasets = []
+                for i in range(len(all_score)):
+                    temp = float(dis_score[i]) / float(all_score[i])
+                    datasets.append("%.2f" % temp)
+                g_model = examappro.grade_model
+                cheak_exist = 0
+                for i in range(len(g_model)):
+                    if g_model[i]["name"] == file_type:
+                        g_model[i]["data"] = [x for x in datasets]
+                        cheak_exist = 1
+                if cheak_exist == 0:
+                    g_model.append({"name": file_type, "type": 'bar', "data": [x for x in datasets]})
+                examappro.grade_model = g_model
+                examappro.save()
             # ##########################################################################
             else:
                 full_grade = [0 for i in range(0, ncol - 3)]
